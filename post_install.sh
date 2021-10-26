@@ -28,10 +28,3 @@ if [ $? -ne 0 ]; then
     exit 3
 fi
 rm $INSTALL >/dev/null 2>&1
-
-if [ $? -ne 0 ]; then
-    echo "ERROR: $PRODUCT install failed"
-    rm $INSTALL >/dev/null 2>&1
-    exit 3
-fi
-rm $INSTALL >/dev/null 2>&1
