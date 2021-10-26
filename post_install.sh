@@ -29,16 +29,9 @@ if [ $? -ne 0 ]; then
 fi
 rm $INSTALL >/dev/null 2>&1
 
-#disable default HTTP ports redirect
-SVC_PATH="$PRODUCT_ROOT/director"
-awk 'BEGIN{A=0} /port="80/{A=1} {if (A==0) print $0} />/{A=0}' $SVC_PATH/tomcat/conf/server-linux.xml >$SVC_PATH/tomcat/conf/server-linux.xml_ 2>/dev/null
-mv $SVC_PATH/tomcat/conf/server-linux.xml_ $SVC_PATH/tomcat/conf/server-linux.xml >/dev/null 2>&1
-
-#enforce EULA
-PROFILE=`ls "$SVC_PATH/userdata/"*.profile 2>/dev/null | head -1`
-if [ "x$PROFILE" != "x" ]; then
-    sed -e 's@"system.licensing.eula.must.agree": false@"system.licensing.eula.must.agree": true@' "$PROFILE" >"${PROFILE}_" 2>/dev/null
-    mv "${PROFILE}_" "$PROFILE" >/dev/null 2>&1
+if [ $? -ne 0 ]; then
+    echo "ERROR: $PRODUCT install failed"
+    rm $INSTALL >/dev/null 2>&1
+    exit 3
 fi
-
-service nkv_dirsvc start >/dev/null 2>&1
+rm $INSTALL >/dev/null 2>&1
